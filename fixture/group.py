@@ -17,12 +17,27 @@ class GroupHelper:
         input = self.group_editor.window(class_name="Edit")
         input.set_text(name)
         input.type_keys("\n")
-
         self.close_group_editor()
+
+    def delete_group(self):
+        self.open_group_editor()
+        # выбрать элемент
+        # получаем дерево элементов
+        tree = self.group_editor.window(auto_id="uxAddressTreeView")
+        root = tree.tree_root()
+        item = root.get_child(0).Select()
+        self.group_editor.wait("visible")
+        # удаляем его
+        self.group_editor.window(auto_id="uxDeleteAddressButton").click()
+        # открылось новое окно
+        self.delete_group = self.app.application.window(title="Delete group")
+        # подтвердить удаление
+        self.delete_group.window(auto_id="uxOKAddressButton").click()
 
     def open_group_editor(self):
         self.app.main_window.window(auto_id="groupButton").click()
         self.group_editor = self.app.application.window(title="Group editor")
+
         self.group_editor.wait("visible")
 
     def close_group_editor(self):
